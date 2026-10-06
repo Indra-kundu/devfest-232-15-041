@@ -1,24 +1,16 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { 
   AlertTriangle, 
   Copy, 
   FileCheck, 
   FileText, 
   Loader2, 
-  Plus, 
   Trash2, 
   UploadCloud, 
   X 
 } from 'lucide-react';
+import { formatBytes } from '../utils/format';
 
-export function formatBytes(bytes, decimals = 1) {
-  if (!+bytes) return '0 B';
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['B', 'KB', 'MB', 'GB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
-}
 
 export default function FileUploader({
   files,

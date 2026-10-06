@@ -1,11 +1,8 @@
-import React from 'react';
 import { 
   AlertCircle, 
   AlertTriangle, 
-  Calendar, 
   CheckCircle2, 
   Clock, 
-  HelpCircle, 
   MinusCircle, 
   Sparkles, 
   Trash2, 
@@ -37,7 +34,7 @@ export default function RequirementsMatcher({
 
   // Find set of content hashes that are already used by a matched file
   const matchedContentHashes = new Set();
-  Object.entries(matches).forEach(([rId, fId]) => {
+  Object.values(matches).forEach((fId) => {
     const matchedF = files.find(f => f.id === fId);
     if (matchedF?.hash) {
       matchedContentHashes.add(matchedF.hash);

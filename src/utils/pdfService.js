@@ -17,7 +17,7 @@ export async function readPdfInfo(file) {
     };
   } catch (err) {
     console.error('Failed to parse PDF:', file.name, err);
-    throw new Error(err.message || 'Corrupted or unreadable PDF file');
+    throw new Error(err.message || 'Corrupted or unreadable PDF file', { cause: err });
   }
 }
 
@@ -292,7 +292,7 @@ export async function generateTenderPackage({ tender, requirements, matches, fil
       }
     } catch (err) {
       console.error(`Failed to copy pages for ${item.file.name}:`, err);
-      throw new Error(`Error embedding file "${item.file.name}": ${err.message}`);
+      throw new Error(`Error embedding file "${item.file.name}": ${err.message}`, { cause: err });
     }
   }
 

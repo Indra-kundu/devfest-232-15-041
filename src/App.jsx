@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Header from './components/Header';
 import TenderInfoCard from './components/TenderInfoCard';
 import FileUploader from './components/FileUploader';
@@ -121,7 +121,7 @@ export default function App() {
         const hash = await computeSHA256(arrayBuffer);
 
         acceptedFiles.push({
-          id: `${file.name}-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+          id: `${file.name}__${hash.slice(0, 12)}__${acceptedFiles.length}`,
           file,
           name: file.name,
           size: file.size,
@@ -277,19 +277,16 @@ export default function App() {
         let score = 0;
 
         for (const rw of reqWords) {
-          if (rw.length > 2 && fileWords.some(fw => fw.includes(rw) || rw.includes(fw))) {
-            score += rw.length;
+          if (rw.length >= 2) {
+            for (const fw of fileWords) {
+              if (fw === rw) {
+                score += 5;
+              } else if (rw.length >= 3 && (fw.includes(rw) || rw.includes(fw))) {
+                score += 2;
+              }
+            }
           }
         }
-
-        // Special tender keyword boosts
-        if (req.id === 'R01' && file.name.includes('trade_license')) score += 10;
-        if (req.id === 'R02' && file.name.includes('tin')) score += 10;
-        if (req.id === 'R03' && file.name.includes('vat')) score += 10;
-        if (req.id === 'R04' && file.name.includes('solvency')) score += 10;
-        if (req.id === 'R05' && file.name.includes('experience')) score += 10;
-        if (req.id === 'R08' && file.name.includes('technical')) score += 10;
-        if (req.id === 'R09' && file.name.includes('financial')) score += 10;
 
         if (score > maxScore) {
           maxScore = score;

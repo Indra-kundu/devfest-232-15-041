@@ -1,4 +1,3 @@
-import React from 'react';
 import { 
   AlertCircle, 
   CheckCircle2, 
@@ -8,7 +7,8 @@ import {
   Loader2, 
   Sparkles 
 } from 'lucide-react';
-import { formatBytes } from './FileUploader';
+import { formatBytes } from '../utils/format';
+
 
 export default function GeneratePackage({
   onGenerate,

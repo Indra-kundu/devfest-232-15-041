@@ -1,10 +1,9 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { 
   Building2, 
   Calendar, 
   CheckCircle2, 
   FileCode, 
-  FileQuestion, 
   FolderCheck, 
   RotateCcw, 
   Tag, 
@@ -16,8 +15,7 @@ export default function TenderInfoCard({
   tenderData, 
   onLoadRequirements, 
   error, 
-  t, 
-  lang 
+  t 
 }) {
   const fileInputRef = useRef(null);
 

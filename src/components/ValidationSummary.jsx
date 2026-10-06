@@ -1,4 +1,3 @@
-import React from 'react';
 import { 
   AlertCircle, 
   AlertTriangle, 
@@ -10,6 +9,7 @@ import {
   ShieldAlert, 
   ShieldCheck 
 } from 'lucide-react';
+
 
 export default function ValidationSummary({
   summary,

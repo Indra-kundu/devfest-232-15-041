@@ -1,5 +1,5 @@
-import React from 'react';
-import { FileText, Globe } from 'lucide-react';
+import { FileText } from 'lucide-react';
+
 
 export default function Header({ lang, setLang, t }) {
   return (
