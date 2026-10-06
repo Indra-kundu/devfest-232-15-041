@@ -156,20 +156,41 @@ export default function App() {
 
   /**
    * Evaluates SHA-256 hash uniqueness across all uploaded files.
+   * If identical hashes exist, intelligently designates the cleanest name as original.
    */
   const calculateDuplicateStatuses = (fileList) => {
-    const hashToFirstFile = new Map();
+    const hashGroups = new Map();
+    for (const file of fileList) {
+      if (!hashGroups.has(file.hash)) {
+        hashGroups.set(file.hash, []);
+      }
+      hashGroups.get(file.hash).push(file);
+    }
+
+    const hashToOriginal = new Map();
+    for (const [hash, group] of hashGroups.entries()) {
+      if (group.length === 1) {
+        hashToOriginal.set(hash, group[0]);
+      } else {
+        const sortedGroup = [...group].sort((a, b) => {
+          const aIsCopy = /\s*\(\d+\)|\s*[-_]?copy/i.test(a.name);
+          const bIsCopy = /\s*\(\d+\)|\s*[-_]?copy/i.test(b.name);
+          if (aIsCopy !== bIsCopy) return aIsCopy ? 1 : -1;
+          return a.name.length - b.name.length;
+        });
+        hashToOriginal.set(hash, sortedGroup[0]);
+      }
+    }
 
     return fileList.map((file) => {
-      if (hashToFirstFile.has(file.hash)) {
-        const originalFile = hashToFirstFile.get(file.hash);
+      const original = hashToOriginal.get(file.hash);
+      if (original && original.id !== file.id) {
         return {
           ...file,
           isDuplicate: true,
-          duplicateOf: originalFile.name
+          duplicateOf: original.name
         };
       } else {
-        hashToFirstFile.set(file.hash, file);
         return {
           ...file,
           isDuplicate: false,
